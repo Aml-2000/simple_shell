@@ -1,5 +1,5 @@
 #include "shell.h"
-
+#include <stdio.h>
 /**
  * interactive - returns true if shell is interactive mode
  * @info: struct address
