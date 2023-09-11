@@ -4,12 +4,11 @@
  * get_history_file - gets the history file
  * @info: parameter struct
  *
- * Return: string containg history file
+ * Return: string containing history file
  */
-
 char *get_history_file(info_t *info)
 {
-	char *buf, *dir;
+	char *buf, *dir, *result;
 
 	dir = _getenv(info, "HOME=");
 	if (!dir)
@@ -21,7 +20,11 @@ char *get_history_file(info_t *info)
 	_strcpy(buf, dir);
 	_strcat(buf, "/");
 	_strcat(buf, HIST_FILE);
-	return (buf);
+
+	result = strdup(buf);
+	free(buf);
+
+	return (result);
 }
 
 /**
@@ -37,18 +40,34 @@ int write_history(info_t *info)
 	list_t *node = NULL;
 
 	if (!filename)
-		return (-1);
+	return (-1);
 
 	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	free(filename);
+
 	if (fd == -1)
-		return (-1);
+	return (-1);
+
 	for (node = info->history; node; node = node->next)
 	{
-		_putsfd(node->str, fd);
-		_putfd('\n', fd);
+		if (_putsfd(node->str, fd) == -1)
+	{
+		close(fd);
+	return (-1);
 	}
-	_putfd(BUF_FLUSH, fd);
+
+		if (_putfd('\n', fd) == -1)
+	{
+		close(fd);
+	return (-1);
+	}
+	}
+	if (_putfd(BUF_FLUSH, fd) == -1)
+	{
+	close(fd);
+	return (-1);
+	}
+
 	close(fd);
 	return (1);
 }
