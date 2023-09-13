@@ -17,7 +17,6 @@ int _myenv(info_t *info)
  * @name: env var name
  * Return: if true return a, if not return null
  */
-
 char *_getenv(info_t *info, const char *name)
 {
 	list_t *node = info->env;
@@ -25,17 +24,20 @@ char *_getenv(info_t *info, const char *name)
 
 	while (node)
 	{
-		if (begins_with(node->str, name))
-		{
-			a = strdup(node->str);
-			if (!a)
-				return (NULL);
-			return (a);
-		}
-		node = node->next;
+	    if (begins_with(node->str, name))
+	{
+		a = strdup(node->str);
+		if (!a)
+		    return (NULL);
+	    free(a);
+	    
+	    return (a);
+	}
+	node = node->next;
 	}
 	return (NULL);
 }
+
 
 /**
  * _mysetenv - sets the value of an environment variable
