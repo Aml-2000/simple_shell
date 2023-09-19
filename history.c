@@ -6,28 +6,22 @@
  *
  * Return: string containg history file (or NULL on failure)
 */
- 
+
 char *get_history_file(info_t *info)
 {
-    char *buf, *dir;
+	char *buf, *dir;
 
-    dir = _getenv(info, "HOME=");
-    if (!dir)
-        return (NULL);
-
-     buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-
-    if (!buf)
-    {
-        free(dir);
-        return (NULL);
-    }
-
-    _strcpy(buf, dir);
-    _strcat(buf, "/");
-    _strcat(buf, HIST_FILE);
-
-    return buf;
+	dir = _getenv(info, "HOME=");
+	if (!dir)
+		return (NULL);
+	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	if (!buf)
+		return (NULL);
+	buf[0] = 0;
+	_strcpy(buf, dir);
+	_strcat(buf, "/");
+	_strcat(buf, HIST_FILE);
+	return (buf);
 }
 
 
@@ -107,7 +101,6 @@ int read_history(info_t *info)
 
 	fd = open(filename, O_RDONLY);
 	free(filename);
-
 	if (fd == -1)
 	{
 	    free(buf);
@@ -128,9 +121,9 @@ int read_history(info_t *info)
 	buf[fsize] = 0;
 	if (rdlen <= 0)
 	{
-		free (buf);
+		free(buf);
 		close(fd);
-		return (0);
+	return (0);
 	}
 
 	if (close(fd) == -1)
